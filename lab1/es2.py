@@ -6,13 +6,15 @@ import psutil
 from time import sleep, time
 from datetime import datetime
 import uuid
-
 import redis
+import os
 
 REDIS_HOST = 'redis-12775.c3.eu-west-1-2.ec2.cloud.redislabs.com'
 REDIS_PORT = 12775
 REDIS_USERNAME = 'default'
-REDIS_PSW = 'lphlxTFuLOGpziPIWVIFq1VekXKOEsTM'
+
+with open("psw.txt") as f:
+        REDIS_PSW = f.readlines()[0]
 
 redis_client = redis.Redis(host=REDIS_HOST, 
                            port=REDIS_PORT, 
@@ -22,8 +24,8 @@ redis_client = redis.Redis(host=REDIS_HOST,
 is_connected = redis_client.ping()
 print(is_connected)
  
-#redis_client.ts().create('battery_level')
-#redis_client.ts().create('power_plugged')
+redis_client.ts().create('battery_level')
+redis_client.ts().create('power_plugged')
 
 while True:
         info = psutil.sensors_battery()
